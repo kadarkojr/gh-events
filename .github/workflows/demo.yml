@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -17,7 +17,7 @@ jobs:
         run: npm run test
   build:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -25,9 +25,16 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+      - name: Upload Arfifacts
+        uses: actions/upload-artifacts@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Deploy
         run: echo "Deploying..."
